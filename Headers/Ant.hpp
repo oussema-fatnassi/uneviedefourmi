@@ -9,7 +9,7 @@ class Ant {
 public:
     Ant();
     void lookAround();
-    void move();
+    void move(string target);
     void stay();
     void setPosition(string position);
     string getPosition();
