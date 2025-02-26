@@ -27,7 +27,7 @@ void Chamber::printChamber() {
     cout << "Chamber " << name << " has " << currentAnts << " ants." << endl;
 }
 
-int Chamber::getAnts() {
+int Chamber::getCurrentAnts() {
     return currentAnts;
 }
 
@@ -37,4 +37,12 @@ int Chamber::getMaxAnts() {
 
 string Chamber::getName() {
     return name;
+}
+
+void Chamber::addAnts(int ants) {
+    if (currentAnts + ants <= maxAnts) {
+        currentAnts += ants;
+    } else {
+        cout << "Chamber " << name << " is full." << endl;
+    }
 }

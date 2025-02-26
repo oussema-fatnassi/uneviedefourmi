@@ -14,7 +14,8 @@ public:
     void addAnt();
     void removeAnt();
     void printChamber();
-    int getAnts();
+    int getCurrentAnts();
+    void addAnts(int ants);
     int getMaxAnts();
     string getName();
 
