@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Headers/Anthill.hpp"
 #include "Headers/Ant.hpp"
+#include "Headers/LinkedList.hpp"
 using namespace std;
 
 int main() {
@@ -19,19 +20,27 @@ int main() {
     anthill.printAnthill();
     anthill.printNumberOfAnts();
 
-    Ant F1;
-    Ant F2;
-    F1.lookAround();
-    F2.lookAround();
-    F1.stay();
-    F2.stay();
-    F1.move("S1");
-    F2.move("S2");
-    F1.stay();
-    F2.stay();
-    F1.move("Sd");
-    F2.move("Sd");
-    F1.stay();
-    F2.stay();
+    LinkedList listAnts;
+    listAnts.addAntAtEnd(1);
+    listAnts.addAntAtEnd(2);
+    listAnts.addAntAtEnd(3);
+    listAnts.addAntAtEnd(4);
+
+    listAnts.printList();
+    listAnts.deleteByValue(3);
+    listAnts.printList();
+
+    // F1.lookAround();
+    // F2.lookAround();
+    // F1.stay();
+    // F2.stay();
+    // F1.move("S1");
+    // F2.move("S2");
+    // F1.stay();
+    // F2.stay();
+    // F1.move("Sd");
+    // F2.move("Sd");
+    // F1.stay();
+    // F2.stay();
     return 0;
 }

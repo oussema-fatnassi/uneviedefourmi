@@ -4,6 +4,11 @@ Ant::Ant() {
     position = "Sv";
 }
 
+Ant::Ant(int value) {
+    position = "Sv";
+    data = value;
+}
+
 void Ant::lookAround() {
     cout << "I'm looking around." << endl;
 }
