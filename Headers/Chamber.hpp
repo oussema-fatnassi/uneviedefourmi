@@ -18,6 +18,7 @@ public:
     void addAnts(int ants);
     int getMaxAnts();
     string getName();
+    Chamber* getNextChamber(const vector<int> path, string chamberName);
 
 private:
     string name;
