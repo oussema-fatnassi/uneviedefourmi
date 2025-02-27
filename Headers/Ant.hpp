@@ -14,12 +14,9 @@ public:
     Ant* next;
     int actualPathIndex;
 
-    void lookAround();
     void move(string target);
-    void stay();
     void setPosition(string position);
     string getPosition();
-    void checkNextChamber(Chamber& chamber);
 
 private:
     string position;
