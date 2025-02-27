@@ -24,15 +24,22 @@ int Chamber::getCurrentAnts() {
     return currentAnts;
 }
 
-int Chamber::getMaxAnts() {
+int Chamber::getMaxAnts() const {
     return maxAnts;
 }
 
-string Chamber::getName() {
+string Chamber::getName() const {
     return name;
 }
 
 void Chamber::addAnts(int ants) {
+    // Allow infinite ants for Sv and Sd
+    if (maxAnts == -1) {
+        currentAnts += ants;
+        return;
+    }
+
+    // Regular chamber logic
     if (currentAnts + ants <= maxAnts) {
         currentAnts += ants;
     } else {
