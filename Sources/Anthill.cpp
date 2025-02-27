@@ -100,9 +100,26 @@ Chamber Anthill::getNextChamberInPath(const vector<int>& path, const string& cur
             if (i + 1 < path.size()) {
                 return chambers[path[i + 1]];
             } else {
-                return currentChamberName;
+                return chambers[path[i]]; // Return current chamber if at end of path
             }
         }
     }
-    return currentChamberName; // Return a default Chamber object
+    // Return first chamber if not found (or handle differently)
+    return chambers[0];
+}
+
+string Anthill::getChamberNameByIndex(int index) const {
+    if (index >= 0 && index < numberOfChambers) {
+        return chambers[index].getName();
+    }
+    return "";
+}
+
+int Anthill::getChamberMaxAntsByName(const string& name) const {
+    for (int i = 0; i < numberOfChambers; i++) {
+        if (chambers[i].getName() == name) {
+            return chambers[i].getMaxAnts();
+        }
+    }
+    return 0;
 }

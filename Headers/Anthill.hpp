@@ -21,6 +21,9 @@ public:
     int getNumberOfChambers() { return numberOfChambers; }
     Chamber getNextChamberInPath(const vector<int>& path,const string& chamberName);
 
+    string getChamberNameByIndex(int index) const;
+    int getChamberMaxAntsByName(const string& name) const;
+
 private:
     vector<vector<int>> allPaths;
     vector<vector<int>> anthill;
