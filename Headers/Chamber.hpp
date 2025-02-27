@@ -11,9 +11,7 @@ class Chamber {
 public:
     Chamber(string name = "", int maxAnts = 0);
     ~Chamber();
-    void addAnt();
     void removeAnt();
-    void printChamber();
     int getCurrentAnts();
     void addAnts(int ants);
     int getMaxAnts() const;
