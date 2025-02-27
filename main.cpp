@@ -60,12 +60,12 @@ int main() {
             if (antsAtDestination[i]) continue;
 
             string currentPosition = listAnts.getAnt(i).getPosition();
-            cout << "Ant " << i << " is at " << currentPosition << endl;
+            cout << "Ant " << i + 1 << " is at " << currentPosition << endl;
 
             if (currentPosition == "Sd") {
                 antsAtDestination[i] = true;
                 antsReachedDestination++;
-                cout << "Ant " << i << " has reached the destination!" << endl;
+                cout << "Ant " << i + 1 << " has reached the destination!" << endl;
                 continue;
             }
 
@@ -82,19 +82,19 @@ int main() {
             }
 
             if (currentIndex == -1) {
-                cout << "Ant " << i << " is not on the path!" << endl;
+                cout << "Ant " << i + 1 << " is not on the path!" << endl;
                 continue;
             }
 
             if (currentIndex + 1 >= path.size()) {
-                cout << "Ant " << i << " is at the end of the path!" << endl;
+                cout << "Ant " << i + 1 << " is at the end of the path!" << endl;
                 continue;
             }
 
             string nextChamberName = anthill.getChamberNameByIndex(path[currentIndex + 1]);
             int nextChamberMaxCapacity = anthill.getChamberMaxAntsByName(nextChamberName);
 
-            cout << "Ant " << i << " trying to move from " << currentPosition << " to " << nextChamberName;
+            cout << "Ant " << i + 1 << " trying to move from " << currentPosition << " to " << nextChamberName;
             cout << " (Occupancy: " << chamberOccupancy[nextChamberName] << "/" << nextChamberMaxCapacity << ")" << endl;
 
             // If the current path is blocked, switch to another available path
@@ -123,14 +123,14 @@ int main() {
                             antPathIndex[i] = p; // Switch to this path
                             nextChamberName = altNextChamberName;
                             foundAlternativePath = true;
-                            cout << "Ant " << i << " switched to an alternate path via " << nextChamberName << endl;
+                            cout << "Ant " << i + 1 << " switched to an alternate path via " << nextChamberName << endl;
                             break;
                         }
                     }
                 }
 
                 if (!foundAlternativePath) {
-                    cout << "No alternate paths available. Ant " << i << " stays at " << currentPosition << endl;
+                    cout << "No alternate paths available. Ant " << i + 1 << " stays at " << currentPosition << endl;
                     continue;
                 }
             }
@@ -139,12 +139,12 @@ int main() {
             chamberOccupancy[currentPosition]--;
             chamberOccupancy[nextChamberName]++;
             listAnts.getAnt(i).move(nextChamberName);
-            cout << "Ant " << i << " moved to " << nextChamberName << endl;
+            cout << "Ant " << i + 1 << " moved to " << nextChamberName << endl;
 
             if (nextChamberName == "Sd") {
                 antsAtDestination[i] = true;
                 antsReachedDestination++;
-                cout << "Ant " << i << " has reached the destination!" << endl;
+                cout << "Ant " << i + 1 << " has reached the destination!" << endl;
             }
         }
 
