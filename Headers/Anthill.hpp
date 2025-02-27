@@ -19,6 +19,7 @@ public:
     vector<Chamber> chambers;
     vector<int> findPathBFS(int startChamber, int endChamber);
     void printPath(const vector<int>& path);
+    int getNumberOfChambers() { return numberOfChambers; }
 
 private:
     vector<vector<int>> anthill;
