@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 #include "Headers/Chamber.hpp"
