@@ -29,6 +29,3 @@ target_include_directories(ANTHILL PRIVATE
 ${CMAKE_SOURCE_DIR}
 ${HEADER_DIR} 
 )
-
-find_package(nlohmann_json CONFIG REQUIRED)
-target_link_libraries(ANTHILL PRIVATE nlohmann_json::nlohmann_json)
