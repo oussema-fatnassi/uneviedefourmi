@@ -1,7 +1,7 @@
 #include "Headers/Ant.hpp"
 
 Ant::Ant() {
-    position = "Chamber Sv";
+    position = "Sv";
 }
 
 Ant::Ant(int value) {
@@ -32,7 +32,7 @@ string Ant::getPosition() {
 
 void Ant::checkNextChamber(Chamber& chamber) {
     if (chamber.getCurrentAnts() < chamber.getMaxAnts()) {
-        chamber.addAnt();
+        chamber.addAnts(1);
         move(chamber.getName());
         stay();
     } else {

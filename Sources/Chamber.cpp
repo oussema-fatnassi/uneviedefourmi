@@ -7,13 +7,6 @@ Chamber::Chamber(string name, int maxAnts) {
 
 Chamber::~Chamber() {}
 
-void Chamber::addAnt() {
-    if (currentAnts < maxAnts) {
-        currentAnts++;
-    } else {
-        cout << "Chamber " << name << " is full." << endl;
-    }
-}
 
 void Chamber::removeAnt() {
     if (currentAnts > 0) {

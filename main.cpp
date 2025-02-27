@@ -8,12 +8,12 @@ int main() {
     Anthill anthill(0);
 
     if (AnthillLoader::loadFromJson(jsonPath, anthill)) {
-        anthill.printAnthill();
-        anthill.printNumberOfAnts();
-        anthill.findAllPathsBFS(0, 15);
+        // anthill.printAnthill();
+        // anthill.printNumberOfAnts();
     }
 
-    // vector<int> path = anthill.findPathBFS(0, 15);
+    vector<vector<int>> allPath = anthill.findAllPathsBFS(0, anthill.getNumberOfChambers() - 1);
+    vector<int> path = allPath[0];
     // anthill.printPath(path);
 
     LinkedList listAnts;
@@ -23,9 +23,16 @@ int main() {
     listAnts.addAntAtEnd(4);
     int cpt = 0;
 
-    while (cpt<20) {
+    while (cpt<10) {
         for (int i = 0; i < listAnts.size(); i++) {
-            // listAnts.getAnt(i).checkNextChamber(getNextChamber(path,listAnts.getAnt(i).getPosition()));
+            string position = listAnts.getAnt(i).getPosition();
+            Chamber nextChamber = anthill.getNextChamberInPath(path, position);
+            if (nextChamber.getName() == "Sd") {
+                cout << "Ant " << i << " has reached the end." << endl;
+                continue;
+            } else {
+                listAnts.getAnt(i).checkNextChamber(nextChamber);
+            }
         }
         cpt++;
     }

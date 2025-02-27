@@ -34,12 +34,11 @@ void Anthill::printAnthill() {
 
 void Anthill::printNumberOfAnts() {
     for (int i = 0; i < numberOfChambers; i++) {
-        cout << "Chamber " << chambers[i].getName() << " has " << chambers[i].getMaxAnts() << " ants." << endl;
+        cout << "Chamber " << chambers[i].getName() << " has " << chambers[i].getMaxAnts() << " max ants." << endl;
     }
 }
 
 vector<vector<int>> Anthill::findAllPathsBFS(int startChamber, int endChamber) {
-    vector<vector<int>> allPaths;
     queue<vector<int>> pathQueue;
     
     vector<int> initialPath;
@@ -93,4 +92,17 @@ vector<vector<int>> Anthill::findAllPathsBFS(int startChamber, int endChamber) {
     }
     
     return allPaths;
+}
+
+Chamber Anthill::getNextChamberInPath(const vector<int>& path, const string& currentChamberName) {
+    for (size_t i = 0; i < path.size(); i++) {
+        if (chambers[path[i]].getName() == currentChamberName) {
+            if (i + 1 < path.size()) {
+                return chambers[path[i + 1]];
+            } else {
+                return currentChamberName;
+            }
+        }
+    }
+    return currentChamberName; // Return a default Chamber object
 }

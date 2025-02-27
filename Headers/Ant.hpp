@@ -12,6 +12,7 @@ public:
     Ant(int value);
     int data;
     Ant* next;
+    int actualPathIndex;
 
     void lookAround();
     void move(string target);
