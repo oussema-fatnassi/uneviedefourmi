@@ -61,3 +61,24 @@ void LinkedList::printList() {
     }
     cout << endl;
 }
+
+Ant LinkedList::getAnt(int data) {
+    Ant* current = head;
+    while (current != nullptr) {
+        if (current->data == data) {
+            return *current;
+        }
+        current = current->next;
+    }
+    return Ant();
+}
+
+int LinkedList::size() {
+    int count = 0;
+    Ant* current = head;
+    while (current != nullptr) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
