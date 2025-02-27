@@ -52,7 +52,11 @@ void LinkedList::deleteByValue(int data) {
 void LinkedList::printList() {
     Ant* current = head;
     while (current != nullptr) {
-        cout << current->data << " ";
+        if(current->next == nullptr) {
+            cout << current->data;
+            break;
+        }
+        cout << current->data << " -> ";
         current = current->next;
     }
     cout << endl;
