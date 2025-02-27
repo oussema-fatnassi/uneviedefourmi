@@ -1,7 +1,7 @@
 #include "Headers/Ant.hpp"
 
 Ant::Ant() {
-    position = "Sv";
+    position = "Chamber Sv";
 }
 
 Ant::Ant(int value) {
@@ -29,3 +29,15 @@ void Ant::setPosition(string position) {
 string Ant::getPosition() {
     return position;
 }
+
+void Ant::checkNextChamber(Chamber& chamber) {
+    if (chamber.getCurrentAnts() < chamber.getMaxAnts()) {
+        chamber.addAnt();
+        move(chamber.getName());
+        stay();
+    } else {
+        cout << "Chamber " << chamber.getName() << " is full." << endl;
+        stay();
+    }
+}
+

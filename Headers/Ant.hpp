@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include "Chamber.hpp"
 using namespace std;
 
 class Ant {
@@ -17,6 +18,7 @@ public:
     void stay();
     void setPosition(string position);
     string getPosition();
+    void checkNextChamber(Chamber& chamber);
 
 private:
     string position;
