@@ -29,7 +29,7 @@ int main() {
 
     // Create ants
     LinkedList listAnts;
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 10; i++) {
         listAnts.addAntAtEnd(i);
     }
     
@@ -126,7 +126,6 @@ int main() {
                 }
             } else {
                 cout << "Chamber " << nextChamberName << " is full. Ant " << i << " stays at " << currentPosition << endl;
-                listAnts.getAnt(i).stay();
             }
 
         }
