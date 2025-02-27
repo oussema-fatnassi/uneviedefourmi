@@ -1,4 +1,3 @@
-// main.cpp
 #include <iostream>
 #include <filesystem>
 #include "Headers/AnthillLoader.hpp"
@@ -16,20 +15,16 @@ int main() {
         return 1;
     }
 
-    vector<vector<int>> allPath = anthill.findAllPathsBFS(0, anthill.getNumberOfChambers() - 1);
-    vector<int> path = allPath[0]; // Using first found path
+    vector<vector<int>> allPaths = anthill.findAllPathsBFS(0, anthill.getNumberOfChambers() - 1);
     
-    // Print the selected path for debugging
-    cout << "Selected path: ";
-    for (size_t i = 0; i < path.size(); i++) {
-        cout << anthill.getChamberNameByIndex(path[i]);
-        if (i < path.size() - 1) cout << " -> ";
+    if (allPaths.empty()) {
+        cout << "No valid paths found!" << endl;
+        return 1;
     }
-    cout << endl;
 
     // Create ants
     LinkedList listAnts;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < numAnts; i++) {
         listAnts.addAntAtEnd(i);
     }
     
@@ -39,16 +34,16 @@ int main() {
         chamberOccupancy[anthill.getChamberNameByIndex(i)] = 0;
     }
     
-    // All ants start at "Sv" - the starting chamber
+    // All ants start at "Sv"
     chamberOccupancy["Sv"] = listAnts.size();
     
     // Keep track of ants that have reached the destination
     vector<bool> antsAtDestination(listAnts.size(), false);
+    vector<int> antPathIndex(listAnts.size(), 0); // Track which path each ant is using
     int antsReachedDestination = 0;
     int round = 0;
     int maxRounds = 100; // Safety limit to prevent infinite loops
     
-    // Continue until all ants reach the destination chamber or max rounds is reached
     while (antsReachedDestination < listAnts.size() && round < maxRounds) {
         cout << "===== Round " << ++round << " =====" << endl;
         
@@ -61,24 +56,22 @@ int main() {
         }
         cout << endl;
         
-        // For each ant
         for (int i = 0; i < listAnts.size(); i++) {
-            // Skip ants that have already reached the destination
-            if (antsAtDestination[i]) {
-                continue;
-            }
-            
+            if (antsAtDestination[i]) continue;
+
             string currentPosition = listAnts.getAnt(i).getPosition();
             cout << "Ant " << i << " is at " << currentPosition << endl;
-            
-            // Check if ant is already at destination
+
             if (currentPosition == "Sd") {
                 antsAtDestination[i] = true;
                 antsReachedDestination++;
                 cout << "Ant " << i << " has reached the destination!" << endl;
                 continue;
             }
-            
+
+            int pathIndex = antPathIndex[i]; // Get the current path index
+            vector<int>& path = allPaths[pathIndex]; // Retrieve the assigned path
+
             // Find the current position in the path
             int currentIndex = -1;
             for (size_t j = 0; j < path.size(); j++) {
@@ -87,57 +80,82 @@ int main() {
                     break;
                 }
             }
-            
+
             if (currentIndex == -1) {
                 cout << "Ant " << i << " is not on the path!" << endl;
                 continue;
             }
-            
-            // Check if there is a next chamber
+
             if (currentIndex + 1 >= path.size()) {
                 cout << "Ant " << i << " is at the end of the path!" << endl;
                 continue;
             }
-            
-            // Get the next chamber
+
             string nextChamberName = anthill.getChamberNameByIndex(path[currentIndex + 1]);
             int nextChamberMaxCapacity = anthill.getChamberMaxAntsByName(nextChamberName);
-            
+
             cout << "Ant " << i << " trying to move from " << currentPosition << " to " << nextChamberName;
             cout << " (Occupancy: " << chamberOccupancy[nextChamberName] << "/" << nextChamberMaxCapacity << ")" << endl;
-            
-            // Try to move to the next chamber if it's not full
-            // Check if the next chamber allows infinite ants
-            if (nextChamberMaxCapacity == -1 || chamberOccupancy[nextChamberName] < nextChamberMaxCapacity) {
-                // Update chamber occupancy
-                chamberOccupancy[currentPosition]--;
-                chamberOccupancy[nextChamberName]++;
 
-                // Move ant
-                listAnts.getAnt(i).move(nextChamberName);
+            // If the current path is blocked, switch to another available path
+            if (nextChamberMaxCapacity != -1 && chamberOccupancy[nextChamberName] >= nextChamberMaxCapacity) {
+                cout << "Chamber " << nextChamberName << " is full. Trying another path..." << endl;
 
-                cout << "Ant " << i << " moved to " << nextChamberName << endl;
+                // Attempt to find an alternate path for this ant
+                bool foundAlternativePath = false;
+                for (size_t p = 0; p < allPaths.size(); p++) {
+                    if (p == pathIndex) continue; // Skip the current path
+                    vector<int>& alternatePath = allPaths[p];
 
-                // Check if ant reached destination
-                if (nextChamberName == "Sd") {
-                    antsAtDestination[i] = true;
-                    antsReachedDestination++;
-                    cout << "Ant " << i << " has reached the destination!" << endl;
+                    int altCurrentIndex = -1;
+                    for (size_t j = 0; j < alternatePath.size(); j++) {
+                        if (anthill.getChamberNameByIndex(alternatePath[j]) == currentPosition) {
+                            altCurrentIndex = j;
+                            break;
+                        }
+                    }
+
+                    if (altCurrentIndex != -1 && altCurrentIndex + 1 < alternatePath.size()) {
+                        string altNextChamberName = anthill.getChamberNameByIndex(alternatePath[altCurrentIndex + 1]);
+                        int altNextChamberMaxCapacity = anthill.getChamberMaxAntsByName(altNextChamberName);
+
+                        if (altNextChamberMaxCapacity == -1 || chamberOccupancy[altNextChamberName] < altNextChamberMaxCapacity) {
+                            antPathIndex[i] = p; // Switch to this path
+                            nextChamberName = altNextChamberName;
+                            foundAlternativePath = true;
+                            cout << "Ant " << i << " switched to an alternate path via " << nextChamberName << endl;
+                            break;
+                        }
+                    }
                 }
-            } else {
-                cout << "Chamber " << nextChamberName << " is full. Ant " << i << " stays at " << currentPosition << endl;
+
+                if (!foundAlternativePath) {
+                    cout << "No alternate paths available. Ant " << i << " stays at " << currentPosition << endl;
+                    continue;
+                }
             }
 
+            // Move the ant
+            chamberOccupancy[currentPosition]--;
+            chamberOccupancy[nextChamberName]++;
+            listAnts.getAnt(i).move(nextChamberName);
+            cout << "Ant " << i << " moved to " << nextChamberName << endl;
+
+            if (nextChamberName == "Sd") {
+                antsAtDestination[i] = true;
+                antsReachedDestination++;
+                cout << "Ant " << i << " has reached the destination!" << endl;
+            }
         }
-        
+
         cout << "Ants at destination: " << antsReachedDestination << "/" << listAnts.size() << endl;
     }
-    
+
     if (round >= maxRounds) {
         cout << "Simulation stopped after " << maxRounds << " rounds!" << endl;
     } else {
         cout << "All ants have reached the destination in " << round << " rounds!" << endl;
     }
-    
+
     return 0;
 }
