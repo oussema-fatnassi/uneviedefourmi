@@ -10,11 +10,11 @@ int main() {
     if (AnthillLoader::loadFromJson(jsonPath, anthill)) {
         anthill.printAnthill();
         anthill.printNumberOfAnts();
-        anthill.printPath(anthill.findPathBFS(0, anthill.getNumberOfChambers() - 1));
+        anthill.findAllPathsBFS(0, 15);
     }
 
-    vector<int> path = anthill.findPathBFS(0, 15);
-    anthill.printPath(path);
+    // vector<int> path = anthill.findPathBFS(0, 15);
+    // anthill.printPath(path);
 
     LinkedList listAnts;
     listAnts.addAntAtEnd(1);

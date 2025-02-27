@@ -38,59 +38,59 @@ void Anthill::printNumberOfAnts() {
     }
 }
 
-vector<int> Anthill::findPathBFS(int startChamber, int endChamber) {
-    vector<bool> visited(numberOfChambers, false);
-    queue<int> q;
-    vector<int> parent(numberOfChambers, -1);
-
-    visited[startChamber] = true;
-    q.push(startChamber);
+vector<vector<int>> Anthill::findAllPathsBFS(int startChamber, int endChamber) {
+    vector<vector<int>> allPaths;
+    queue<vector<int>> pathQueue;
     
-    bool foundPath = false;
+    vector<int> initialPath;
+    initialPath.push_back(startChamber);
+    pathQueue.push(initialPath);
     
-    while (!q.empty() && !foundPath) {
-        int currentChamber = q.front();
-        q.pop();
+    cout << "Finding all paths from " << chambers[startChamber].getName() 
+         << " to " << chambers[endChamber].getName() << " using BFS:" << endl;
+    
+    while (!pathQueue.empty()) {
+        vector<int> currentPath = pathQueue.front();
+        pathQueue.pop();
+        
+        int currentChamber = currentPath.back();
         
         if (currentChamber == endChamber) {
-            foundPath = true;
-            break;
+            allPaths.push_back(currentPath);
+            continue;
         }
         
         for (int i = 0; i < numberOfChambers; i++) {
-            if (anthill[currentChamber][i] == 1 && !visited[i]) {
-                visited[i] = true;
-                q.push(i);
-                parent[i] = currentChamber;
+            if (anthill[currentChamber][i] == 1) {
+                bool alreadyInPath = false;
+                for (size_t j = 0; j < currentPath.size(); j++) {
+                    if (currentPath[j] == i) {
+                        alreadyInPath = true;
+                        break;
+                    }
+                }
+                
+                if (!alreadyInPath) {
+                    vector<int> newPath = currentPath;
+                    newPath.push_back(i);
+                    pathQueue.push(newPath);
+                }
             }
         }
     }
     
-    if (!foundPath) {
-        return vector<int>();
-    }
+    cout << "Total number of paths found: " << allPaths.size() << endl;
     
-    vector<int> path;
-    for (int at = endChamber; at != -1; at = parent[at]) {
-        path.push_back(at);
-    }
-    
-    reverse(path.begin(), path.end());
-    return path;
-}
-
-void Anthill::printPath(const vector<int>& path) {
-    if (path.empty()) {
-        cout << "No path exists." << endl;
-        return;
-    }
-    
-    cout << "Path: ";
-    for (size_t i = 0; i < path.size(); i++) {
-        cout << chambers[path[i]].getName();
-        if (i < path.size() - 1) {
-            cout << " -> ";
+    for (size_t i = 0; i < allPaths.size(); i++) {
+        cout << "Path " << (i+1) << ": ";
+        for (size_t j = 0; j < allPaths[i].size(); j++) {
+            cout << chambers[allPaths[i][j]].getName();
+            if (j < allPaths[i].size() - 1) {
+                cout << " -> ";
+            }
         }
+        cout << endl;
     }
-    cout << endl;
+    
+    return allPaths;
 }
