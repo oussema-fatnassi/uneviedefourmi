@@ -94,20 +94,6 @@ vector<vector<int>> Anthill::findAllPathsBFS(int startChamber, int endChamber) {
     return allPaths;
 }
 
-Chamber Anthill::getNextChamberInPath(const vector<int>& path, const string& currentChamberName) {
-    for (size_t i = 0; i < path.size(); i++) {
-        if (chambers[path[i]].getName() == currentChamberName) {
-            if (i + 1 < path.size()) {
-                return chambers[path[i + 1]];
-            } else {
-                return chambers[path[i]]; // Return current chamber if at end of path
-            }
-        }
-    }
-    // Return first chamber if not found (or handle differently)
-    return chambers[0];
-}
-
 string Anthill::getChamberNameByIndex(int index) const {
     if (index >= 0 && index < numberOfChambers) {
         return chambers[index].getName();

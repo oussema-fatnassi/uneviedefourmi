@@ -19,7 +19,6 @@ public:
     vector<Chamber> chambers;
     vector<vector<int>> findAllPathsBFS(int startChamber, int endChamber);
     int getNumberOfChambers() { return numberOfChambers; }
-    Chamber getNextChamberInPath(const vector<int>& path,const string& chamberName);
 
     string getChamberNameByIndex(int index) const;
     int getChamberMaxAntsByName(const string& name) const;
