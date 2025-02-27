@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <queue>
 using namespace std;
 
 #include "Headers/Chamber.hpp"
@@ -15,6 +16,8 @@ public:
     void printAnthill();
     void printNumberOfAnts();
     vector<Chamber> chambers;
+    vector<int> findPathBFS(int startChamber, int endChamber);
+    void printPath(const vector<int>& path);
 
 private:
     vector<vector<int>> anthill;
