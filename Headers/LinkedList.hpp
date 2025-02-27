@@ -17,7 +17,7 @@ public:
     void addAntAtEnd(int data);
     void deleteByValue(int data);
     void printList();
-    Ant getAnt(int data);
+    Ant& getAnt(int data);
     int size();
 };
 

@@ -62,7 +62,7 @@ void LinkedList::printList() {
     cout << endl;
 }
 
-Ant LinkedList::getAnt(int data) {
+Ant& LinkedList::getAnt(int data) {
     Ant* current = head;
     while (current != nullptr) {
         if (current->data == data) {
@@ -70,7 +70,10 @@ Ant LinkedList::getAnt(int data) {
         }
         current = current->next;
     }
-    return Ant();
+    // This is problematic - returning reference to temporary
+    // Better to throw an exception or return a pointer
+    static Ant dummy;
+    return dummy;
 }
 
 int LinkedList::size() {
