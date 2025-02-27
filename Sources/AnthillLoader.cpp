@@ -2,7 +2,7 @@
 
 using json = nlohmann::json;
 
-bool AnthillLoader::loadFromJson(const std::string& jsonFile, Anthill& anthill) {
+bool AnthillLoader::loadFromJson(const std::string& jsonFile, Anthill& anthill, int& numAnts) {
     std::ifstream file(jsonFile);
     if (!file) {
         std::cerr << "Error: Unable to open JSON file: " << jsonFile << std::endl;
@@ -28,24 +28,28 @@ bool AnthillLoader::loadFromJson(const std::string& jsonFile, Anthill& anthill) 
 
     json selectedConfig = data[choice - 1];
 
+    // Retrieve the number of ants for the simulation
+    numAnts = selectedConfig["f"];
+
     // Get chamber count and add space for Sv and Sd
     int numChambers = selectedConfig["chambers"].size() + 2; // +2 for Sv and Sd
     anthill = Anthill(numChambers);
 
-    // Add Start Chamber (Sv)
-    anthill.chambers[0] = Chamber("Sv", -1);  // Sv has infinite ants
+    // Add Start Chamber (Sv) with infinite capacity (-1)
+    anthill.chambers[0] = Chamber("Sv", -1);
 
     // Load chambers from JSON
     for (size_t i = 0; i < selectedConfig["chambers"].size(); i++) {
         if (selectedConfig["chambers"][i].is_string()) {
-            anthill.chambers[i + 1] = Chamber(selectedConfig["chambers"][i], 0);
+            // Default maxAnts to 1 for intermediate chambers
+            anthill.chambers[i + 1] = Chamber(selectedConfig["chambers"][i], 1);
         } else if (selectedConfig["chambers"][i].is_object()) {
             anthill.chambers[i + 1] = Chamber(selectedConfig["chambers"][i]["name"], selectedConfig["chambers"][i]["ants"]);
         }
     }
 
-    // Add Destination Chamber (Sd) at the last index
-    anthill.chambers[numChambers - 1] = Chamber("Sd", -1);  // Sd has infinite ants
+    // Add Destination Chamber (Sd) with infinite capacity (-1)
+    anthill.chambers[numChambers - 1] = Chamber("Sd", -1);
 
     // Load tunnels
     for (const auto& tunnel : selectedConfig["tunnels"]) {
@@ -63,6 +67,6 @@ bool AnthillLoader::loadFromJson(const std::string& jsonFile, Anthill& anthill) 
         }
     }
 
-    std::cout << "Anthill loaded successfully with Sv and Sd!" << std::endl;
+    std::cout << "Anthill loaded successfully with Sv and Sd having infinite capacity!" << std::endl;
     return true;
 }

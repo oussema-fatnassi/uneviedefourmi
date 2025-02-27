@@ -10,7 +10,7 @@
 using namespace std;
 class AnthillLoader {
 public:
-    static bool loadFromJson(const std::string& jsonFile, Anthill& anthill);
+    bool loadFromJson(const std::string& jsonFile, Anthill& anthill, int& numAnts) ;
 };
 
 #endif
