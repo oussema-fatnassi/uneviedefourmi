@@ -1,13 +1,16 @@
 #include "Headers/LinkedList.hpp"
 
-LinkedList::LinkedList() {
+LinkedList::LinkedList()
+{
     head = nullptr;
 }
 
-LinkedList::~LinkedList() {
-    Ant* current = head;
-    Ant* next;
-    while (current != nullptr) {
+LinkedList::~LinkedList()
+{
+    Ant *current = head;
+    Ant *next;
+    while (current != nullptr)
+    {
         next = current->next;
         delete current;
         current = next;
@@ -15,30 +18,41 @@ LinkedList::~LinkedList() {
     head = nullptr;
 }
 
-void LinkedList::addAntAtEnd(int data) {
-    Ant* newAnt = new Ant();
+// Add an ant at the end of the linked list
+void LinkedList::addAntAtEnd(int data)
+{
+    Ant *newAnt = new Ant();
     newAnt->data = data;
-    newAnt->next = nullptr; 
-    
-    if (head == nullptr) {
+    newAnt->next = nullptr;
+
+    if (head == nullptr)
+    {
         head = newAnt;
         return;
     }
-    Ant* current = head;
-    while (current->next != nullptr) {
+    Ant *current = head;
+    while (current->next != nullptr)
+    {
         current = current->next;
     }
     current->next = newAnt;
 }
 
-void LinkedList::deleteByValue(int data) {
-    Ant* current = head;
-    Ant* previous = nullptr;
-    while (current != nullptr) {
-        if (current->data == data) {
-            if (previous == nullptr) {
+// Delete an ant by its value
+void LinkedList::deleteByValue(int data)
+{
+    Ant *current = head;
+    Ant *previous = nullptr;
+    while (current != nullptr)
+    {
+        if (current->data == data)
+        {
+            if (previous == nullptr)
+            {
                 head = current->next;
-            } else {
+            }
+            else
+            {
                 previous->next = current->next;
             }
             delete current;
@@ -49,10 +63,14 @@ void LinkedList::deleteByValue(int data) {
     }
 }
 
-void LinkedList::printList() {
-    Ant* current = head;
-    while (current != nullptr) {
-        if(current->next == nullptr) {
+// Print the linked list
+void LinkedList::printList()
+{
+    Ant *current = head;
+    while (current != nullptr)
+    {
+        if (current->next == nullptr)
+        {
             cout << current->data;
             break;
         }
@@ -62,10 +80,14 @@ void LinkedList::printList() {
     cout << endl;
 }
 
-Ant& LinkedList::getAnt(int data) {
-    Ant* current = head;
-    while (current != nullptr) {
-        if (current->data == data) {
+// Get the ant at a specific position in the linked list
+Ant &LinkedList::getAnt(int data)
+{
+    Ant *current = head;
+    while (current != nullptr)
+    {
+        if (current->data == data)
+        {
             return *current;
         }
         current = current->next;
@@ -76,10 +98,13 @@ Ant& LinkedList::getAnt(int data) {
     return dummy;
 }
 
-int LinkedList::size() {
+// Get the size of the linked list
+int LinkedList::size()
+{
     int count = 0;
-    Ant* current = head;
-    while (current != nullptr) {
+    Ant *current = head;
+    while (current != nullptr)
+    {
         count++;
         current = current->next;
     }
