@@ -11,12 +11,12 @@ class Chamber {
 public:
     Chamber(string name = "", int maxAnts = 0);
     ~Chamber();
-    void addAnt();
     void removeAnt();
-    void printChamber();
-    int getAnts();
-    int getMaxAnts();
-    string getName();
+    int getCurrentAnts();
+    void addAnts(int ants);
+    int getMaxAnts() const;
+    string getName() const;
+    Chamber* getNextChamber(const vector<int> path, string chamberName);
 
 private:
     string name;

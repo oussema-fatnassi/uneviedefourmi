@@ -1,26 +1,27 @@
 #include "Headers/Ant.hpp"
 
-Ant::Ant() {
+Ant::Ant()
+{
     position = "Sv";
 }
 
-void Ant::lookAround() {
-    cout << "I'm looking around." << endl;
+Ant::Ant(int value)
+{
+    position = "Sv";
+    data = value;
 }
 
-void Ant::move(string target) {
-    cout << "I'm moving to " << target << endl;
+void Ant::move(string target)
+{
     setPosition(target);
 }
 
-void Ant::stay() {
-    cout << "I'm staying at " << this->position << endl;
-}
-
-void Ant::setPosition(string position) {
+void Ant::setPosition(string position)
+{
     this->position = position;
 }
 
-string Ant::getPosition() {
+string Ant::getPosition()
+{
     return position;
 }

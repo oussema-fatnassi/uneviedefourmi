@@ -1,40 +1,59 @@
 #include "Headers/Chamber.hpp"
 
-Chamber::Chamber(string name, int maxAnts) {
+Chamber::Chamber(string name, int maxAnts)
+{
     this->name = name;
     this->maxAnts = maxAnts;
 }
 
 Chamber::~Chamber() {}
 
-void Chamber::addAnt() {
-    if (currentAnts < maxAnts) {
-        currentAnts++;
-    } else {
-        cout << "Chamber " << name << " is full." << endl;
-    }
-}
-
-void Chamber::removeAnt() {
-    if (currentAnts > 0) {
+// Remove an ant from the chamber
+void Chamber::removeAnt()
+{
+    if (currentAnts > 0)
+    {
         currentAnts--;
-    } else {
+    }
+    else
+    {
         cout << "Chamber " << name << " is empty." << endl;
     }
 }
 
-void Chamber::printChamber() {
-    cout << "Chamber " << name << " has " << currentAnts << " ants." << endl;
-}
-
-int Chamber::getAnts() {
+// Getters for current and max ants, and chamber name
+int Chamber::getCurrentAnts()
+{
     return currentAnts;
 }
 
-int Chamber::getMaxAnts() {
+int Chamber::getMaxAnts() const
+{
     return maxAnts;
 }
 
-string Chamber::getName() {
+string Chamber::getName() const
+{
     return name;
+}
+
+// Add ants to the chamber, respecting the maximum capacity
+void Chamber::addAnts(int ants)
+{
+    // Allow infinite ants for Sv and Sd
+    if (maxAnts == -1)
+    {
+        currentAnts += ants;
+        return;
+    }
+
+    // Regular chamber logic
+    if (currentAnts + ants <= maxAnts)
+    {
+        currentAnts += ants;
+    }
+    else
+    {
+        cout << "Chamber " << name << " is full." << endl;
+    }
 }
