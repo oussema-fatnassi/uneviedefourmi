@@ -2,9 +2,11 @@
 
 using json = nlohmann::json;
 
-bool AnthillLoader::loadFromJson(const std::string& jsonFile, Anthill& anthill, int& numAnts) {
+bool AnthillLoader::loadFromJson(const std::string &jsonFile, Anthill &anthill, int &numAnts)
+{
     std::ifstream file(jsonFile);
-    if (!file) {
+    if (!file)
+    {
         std::cerr << "Error: Unable to open JSON file: " << jsonFile << std::endl;
         return false;
     }
@@ -14,14 +16,16 @@ bool AnthillLoader::loadFromJson(const std::string& jsonFile, Anthill& anthill, 
 
     // Ask user which anthill to load
     std::cout << "Select an Anthill Configuration:\n";
-    for (size_t i = 0; i < data.size(); i++) {
+    for (size_t i = 0; i < data.size(); i++)
+    {
         std::cout << i + 1 << ". " << data[i]["file"] << std::endl;
     }
 
     int choice;
     std::cout << "Enter choice: ";
     std::cin >> choice;
-    if (choice < 1 || choice > data.size()) {
+    if (choice < 1 || choice > data.size())
+    {
         std::cout << "Invalid choice!\n";
         return false;
     }
@@ -39,11 +43,15 @@ bool AnthillLoader::loadFromJson(const std::string& jsonFile, Anthill& anthill, 
     anthill.chambers[0] = Chamber("Sv", -1);
 
     // Load chambers from JSON
-    for (size_t i = 0; i < selectedConfig["chambers"].size(); i++) {
-        if (selectedConfig["chambers"][i].is_string()) {
+    for (size_t i = 0; i < selectedConfig["chambers"].size(); i++)
+    {
+        if (selectedConfig["chambers"][i].is_string())
+        {
             // Default maxAnts to 1 for intermediate chambers
             anthill.chambers[i + 1] = Chamber(selectedConfig["chambers"][i], 1);
-        } else if (selectedConfig["chambers"][i].is_object()) {
+        }
+        else if (selectedConfig["chambers"][i].is_object())
+        {
             anthill.chambers[i + 1] = Chamber(selectedConfig["chambers"][i]["name"], selectedConfig["chambers"][i]["ants"]);
         }
     }
@@ -52,17 +60,22 @@ bool AnthillLoader::loadFromJson(const std::string& jsonFile, Anthill& anthill, 
     anthill.chambers[numChambers - 1] = Chamber("Sd", -1);
 
     // Load tunnels
-    for (const auto& tunnel : selectedConfig["tunnels"]) {
+    for (const auto &tunnel : selectedConfig["tunnels"])
+    {
         std::string chamber1 = tunnel[0];
         std::string chamber2 = tunnel[1];
 
         int idx1 = -1, idx2 = -1;
-        for (size_t i = 0; i < numChambers; i++) {
-            if (anthill.chambers[i].getName() == chamber1) idx1 = i;
-            if (anthill.chambers[i].getName() == chamber2) idx2 = i;
+        for (size_t i = 0; i < numChambers; i++)
+        {
+            if (anthill.chambers[i].getName() == chamber1)
+                idx1 = i;
+            if (anthill.chambers[i].getName() == chamber2)
+                idx2 = i;
         }
 
-        if (idx1 != -1 && idx2 != -1) {
+        if (idx1 != -1 && idx2 != -1)
+        {
             anthill.addTunnel(idx1, idx2);
         }
     }
